@@ -8,7 +8,7 @@ if (!process.env.GEMINI_API_KEY || !process.env.QDRANT_URL
   return new Response(JSON.stringify({ error: 'server config error' }), { status: 500 });
 }
 
-
+const THRESHOLD = 0.65;
 const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const qdrant = new QdrantClient({
   url: process.env.QDRANT_URL,       
@@ -44,7 +44,7 @@ export async function POST(req) {
       vector, // 질문 벡터
       limit: 1, // top-k 1 = 가장 유사한 결과 1개 반환
       with_payload: true, // payload(답변)도 같이 달라고 요청
-      score_threshold: 0.6, // 유사도 최저기준 설정. 유연한 검색을 위해 0.6
+      score_threshold: THRESHOLD, // 유사도 최저기준 설정. 유연한 검색을 위해 0.65
     });
 
 
